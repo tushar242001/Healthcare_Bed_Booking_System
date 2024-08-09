@@ -25,7 +25,9 @@ def home():
 def usersignup():
     return render_template("usersignup.html")
 
-
+@app.route("/userlogin")
+def userlogin():
+    return render_template("userlogin.html")
 
 
 # testing wherther db is connected or not
