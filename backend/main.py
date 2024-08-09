@@ -21,6 +21,13 @@ class Test(db.Model):
 def home():
     return render_template("index.html")
 
+@app.route("/usersignup")
+def usersignup():
+    return render_template("usersignup.html")
+
+
+
+
 # testing wherther db is connected or not
 @app.route("/test")
 def test():
