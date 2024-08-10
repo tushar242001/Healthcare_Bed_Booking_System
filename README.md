@@ -29,7 +29,16 @@ This project is a Healthcare Bed Booking System designed to streamline the proce
    git clone https://github.com/tushar242001/Healthcare_Bed_Booking_System.git
 
 2. **Install Dependencies:**
+   Navigate to the project directory and install necessary dependencies using :
     ```bash
-   Navigate to the project directory and install necessary dependencies using: pip install -r requirements.txt
+    pip install -r requirements.txt
+    
+3. **Setup Database:**
+   Create a MySQL database using the provided schema and configure the connection in the Flask application.
+   
+4. **Run the Application:**
+   Start the Flask server by running:
+   ```bash
+   python app.py
 
     
