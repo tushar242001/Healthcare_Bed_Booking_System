@@ -41,4 +41,4 @@ This project is a Healthcare Bed Booking System designed to streamline the proce
    ```bash
    python app.py
 
-    
+5. Access the system through your web browser at  `http://localhost:5000.`
