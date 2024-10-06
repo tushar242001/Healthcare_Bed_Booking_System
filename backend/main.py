@@ -29,6 +29,25 @@ def usersignup():
 def userlogin():
     return render_template("userlogin.html")
 
+@app.route("/hospitalsignup")
+def hospitalsignup():
+    return render_template("hospitalsignup.html")
+
+@app.route("/hospitallogin")
+def hospitallogin():
+    return render_template("hospitallogin.html")
+
+@app.route("/adminlogin")
+def adminlogin():
+    return render_template("adminlogin.html")
+
+@app.route("/adminsignup")
+def adminsignup():
+    return render_template("adminsignup.html")
+
+
+
+
 
 # testing wherther db is connected or not
 @app.route("/test")
