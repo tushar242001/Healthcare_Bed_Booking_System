@@ -1,5 +1,6 @@
 from flask import Flask,render_template,redirect, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, login_user, UserMixin
 from werkzeug.security import generate_password_hash,check_password_hash
 import pymysql
 from sqlalchemy import text
@@ -14,14 +15,24 @@ app.secret_key="TusharAdling"
 app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:@localhost/covid'
 db=SQLAlchemy(app)
 
-class User(db.Model):
+# Initialize Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'userlogin'
+
+
+
+class User(UserMixin,db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    srfid = db.Column(db.String(200), unique=True, nullable=False)
-    email = db.Column(db.String(200), nullable=False)
-    password = db.Column(db.String(500), nullable=False)
+    srfid = db.Column(db.String(200), unique=True)
+    email = db.Column(db.String(200))
+    password = db.Column(db.String(1000))
     phone = db.Column(db.Integer)
 
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 @app.route("/")
 def home():
@@ -41,7 +52,7 @@ def usersignup():
             {"srfid": srfid, "email": email, "password": encpassword, "phone": phone}
         )
         db.session.commit()  # Commit the transaction
-        return 'User Added'
+      
     return render_template("usersignup.html")
 
 
@@ -52,8 +63,9 @@ def userlogin():
         email=request.form.get('email')
         password=request.form.get('password')
         user=User.query.filter_by(srfid=srfid).first()
-
+        print(user)
         if user and check_password_hash(user.password,password):
+            login_user(user)
             return 'Login Success'
         else:
             return 'login failed'
