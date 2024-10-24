@@ -1,7 +1,8 @@
-from flask import Flask,render_template,redirect,flash,request
+from flask import Flask,render_template,redirect,flash,request, url_for
 from flask.globals import request
+from flask.helpers import url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, login_user, UserMixin
+from flask_login import LoginManager, login_required, login_user, UserMixin, logout_user
 from werkzeug.security import generate_password_hash,check_password_hash
 import pymysql
 from sqlalchemy import text
@@ -59,7 +60,7 @@ def usersignup():
         )
         db.session.commit()  # Commit the transaction
         flash("Sign in Success","success")
-        return render_template("index.html")
+        return render_template("userlogin.html")
     return render_template("usersignup.html")
 
 
@@ -82,11 +83,12 @@ def userlogin():
 
     return render_template("userlogin.html")
 
-
-
-
-
-
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash("Logout Successful","Warning")
+    return redirect(url_for('login'))
 
 
 
