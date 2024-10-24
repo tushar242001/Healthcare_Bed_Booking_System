@@ -74,7 +74,7 @@ def userlogin():
         if user and check_password_hash(user.password,password):
             login_user(user)
             flash("Login Success","info")
-            return render_template("userlogin.html")
+            return render_template("index.html")
         else:
             flash("Invalid Credentials","danger")
             return render_template("userlogin.html")
@@ -88,7 +88,7 @@ def userlogin():
 def logout():
     logout_user()
     flash("Logout Successful","Warning")
-    return redirect(url_for('login'))
+    return redirect(url_for('userlogin'))
 
 
 

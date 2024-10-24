@@ -58,13 +58,27 @@
             <li><a href="/" class="active">Home</a></li>
             <li><a href="#departments">Patient Details</a></li>
             <li><a href="#doctors">Available Beds</a></li>
-            <li class="dropdown"><a href="#"><span>Sign In</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+
+{% if current_user.is_authenticated %}
+
+            <li class="dropdown"><a href="/userlogin"><span>Welcome {{current_user.email}}</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                <li><a href="/logout">Logout</a></li>
+              </ul>
+            </li>
+{% else %}
+ 
+          <li class="dropdown"><a href="/userlogin"><span>Sign In</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
               <ul>
                 <li><a href="/userlogin">User Login</a></li>
                 <li><a href="/hospitallogin">Hospital Login</a></li>
                 <li><a href="/adminlogin">Admin Login</a></li>
               </ul>
             </li>
+{% endif %}
+
+
+
             <li><a href="#contact">Contact</a></li>
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
