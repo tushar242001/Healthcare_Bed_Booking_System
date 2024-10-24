@@ -1,4 +1,5 @@
-from flask import Flask,render_template,redirect, request
+from flask import Flask,render_template,redirect,flash,request
+from flask.globals import request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, UserMixin
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -46,13 +47,19 @@ def usersignup():
         password=request.form.get('password')
         phone=request.form.get('phone')
         encpassword=generate_password_hash(password,method='pbkdf2:sha256')
+        user=User.query.filter_by(srfid=srfid).first()
+        emailUser=User.query.filter_by(email=email).first()
+        if user or emailUser:
+            flash("Email or Srfid already present","warning")
+            return render_template("usersignup.html")
         # print(srfid,email,phone,password)
         new_user = db.session.execute(
             text("INSERT INTO `user` (`srfid`, `email`, `password`, `phone`) VALUES (:srfid, :email, :password, :phone)"),
             {"srfid": srfid, "email": email, "password": encpassword, "phone": phone}
         )
         db.session.commit()  # Commit the transaction
-      
+        flash("Sign in Success","success")
+        return render_template("index.html")
     return render_template("usersignup.html")
 
 
@@ -63,12 +70,16 @@ def userlogin():
         email=request.form.get('email')
         password=request.form.get('password')
         user=User.query.filter_by(srfid=srfid).first()
-        print(user)
         if user and check_password_hash(user.password,password):
             login_user(user)
-            return 'Login Success'
+            flash("Login Success","info")
+            return render_template("userlogin.html")
         else:
-            return 'login failed'
+            flash("Invalid Credentials","danger")
+            return render_template("userlogin.html")
+        
+
+
     return render_template("userlogin.html")
 
 
